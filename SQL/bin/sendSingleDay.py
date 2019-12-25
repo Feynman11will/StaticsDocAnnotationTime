@@ -38,7 +38,6 @@ if __name__=='__main__':
 
     lastDay = datetime.now() + timedelta(days = -1)
     date = str(str(lastDay)).split(' ')[0]
-    # date = str(str(datetime(2019,11,2))).split(' ')[0]
     Sender = SendingDay(date=date)
     Sender.sendSingleDay()
     print(f'昨天的统计结果已经发送完成')

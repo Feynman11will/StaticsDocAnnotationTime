@@ -283,10 +283,12 @@ def getDoctorsListName():
 
 class DaySqlDataget():
     '''按天获取信息
+    excel_header
     1. 对服务器中的user_operation 获取一天的标注过的数据 3,1 
     2. 使用otherid 索引evaluation 中的id，并索引case id， 缩减数据
     '''
-    def __init__(self,sql, pPath ='../../Date61',year=2019, month=12,day=9):
+    excel_header = ['caseid','serieasId','markerId','taskId','End_BeginTime','useTime/s','isReview']
+    def __init__(self,sql=None, pPath ='../../Date61',year=2019, month=12,day=9):
         self.pPath = pPath
         self.year = year
         self.month = month
@@ -392,6 +394,7 @@ class DaySqlDataget():
                 if ResTime['marker'] == OneDayDoctor:
                     sec = (ResTime['end_begin'][0]-ResTime['end_begin'][1]).seconds
                     TaskIdlist = self.DictName[ResTime['taskId']]
+                    # excel_header = ['caseid','serieasId','markerId','taskId','timeEnd_Begin','time','isReview']
                     appender =[ResTime['caseId'],ResTime['otherId'],ResTime['marker'],TaskIdlist,ResTime['end_begin'],sec,ResTime['isReview']] 
                     self.dictOneDayDoctorInfo[OneDayDoctor].append(appender)
         excel_filepath = os.path.join(self.pPath,'accurateTime.xlsx')
@@ -409,7 +412,7 @@ class DaySqlDataget():
         li = list(inputDict.keys())
         li.sort()
         print(f"wo shi li:{li}")
-        excel_header = ['caseid','serieasId','markerId','taskId','timeEnd_Begin','time','isReview']
+        excel_header = DaySqlDataget.excel_header
         if li==[]:
             
             inputD = [['']*len(excel_header)]

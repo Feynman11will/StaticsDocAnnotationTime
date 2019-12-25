@@ -7,10 +7,16 @@ sys.path.append('../')
 
 from config import config
 import xlrd
+from lib.StaticsDayAllDoc import DayStatic
 serverlist = config.serverlist
 
 class synthesis():
     listServer = serverlist
+    excel_header = ['day','docId','taskListName','End_begin', 'workTime/hours','biaozhuTime/hours', 
+        'caseNum', 'meantime/min', 'maxtime/min','reveiwNum','server','eatingTime/Hours','biaozhuWithoutEatTime/Hours']
+    excel_headerorder = ['day','docId','End_begin', 'workTime/hours','eatingTime/Hours',
+        'biaozhuWithoutEatTime/Hours','biaozhuTime/hours', 'caseNum', 'reveiwNum','meantime/min', 
+        'maxtime/min','server','taskListName']
     def __init__(self,
         isSingleDay=True,
         pPath = '../../Data61',
@@ -103,13 +109,13 @@ class synthesis():
         np.save(npy_filepath,self.write2excel)
         
         write = pd.ExcelWriter(excel_filepath)
-        excel_header = ['day','docId','taskListName','End_begin', 'workTime/hours','biaozhuTime/hours', 'caseNum', 'meantime/min', 'maxtime/min','reveiwNum','server','eatingTime/Hours','biaozhuWithoutEatTime/Hours']
+        excel_header = synthesis.excel_header
         dfDict = {}
         for idx, h in enumerate(excel_header):
             dfDict[h] = self.write2excel[:,idx+1]
 
         df1 = pd.DataFrame(dfDict)
-        excel_headerorder = ['day','docId','End_begin', 'workTime/hours','eatingTime/Hours','biaozhuWithoutEatTime/Hours','biaozhuTime/hours', 'caseNum', 'reveiwNum','meantime/min', 'maxtime/min','server','taskListName']
+        excel_headerorder = synthesis.excel_headerorder
         df1 = df1.loc[:,excel_headerorder]
         df1.to_excel(write,f"Sheet1",float_format='%.3f')
         

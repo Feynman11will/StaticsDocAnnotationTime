@@ -24,9 +24,13 @@ class DocotorCoarseMes(Doctor):
         
     def __daysStatics(self):
         """
-        @decription:
-        @self.data进行处理, 获取总共的天数
+        @self.data为当前医生所有的数据
+        excel_header = ['caseid','serieasId','markerId','taskId','timeEnd_Begin','time','isReview']
+        @workDaysNum: 当前医生工作的日期列表长度
+        @dayTimeListOfDoc：当前医生工作日期列表
+        @dayTimeOfDoc: 原始的医生标注日期
         """
+        
         self.npyData = np.array(self.data)
         
         dayTimeOfDoc = self.npyData[:,4]
@@ -49,11 +53,17 @@ class DocotorCoarseMes(Doctor):
         self.__taksTime()
         self.__taskCaseTime()
     def __timeAll(self):
+        """
+        @timeAll: 医生净标注时间
+        """
         self.listCaseTime = self.npyData[:,5]
         self.timeAll = self.listCaseTime.sum()
         
-
     def __taksTime(self):
+        """
+        @taskInfo:存储任务相关的信息，一个任务一个字典
+            Listkeys() = taskId,taskLength,timeList,meanTime
+        """
         taskInfo = []
         for task in self.listTask:
             taskInfo.append({"taskId":task})
@@ -65,6 +75,9 @@ class DocotorCoarseMes(Doctor):
         self.taskInfo = taskInfo
 
     def __taskCaseTime(self):
+        """
+        @caseTime: 一个case 所使用的时间
+        """
         self.caseTime = self.npyData[:,5]
 
     def __str__(self):

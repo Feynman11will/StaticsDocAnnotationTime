@@ -8,10 +8,13 @@ import datetime
 from lib.Doctor import Doctor
 from  config import config
 import pandas as pd 
+from lib.GetInfoFromSql import DaySqlDataget
 
 class DocotorDay(DocotorCoarseMes):
     def __init__(self,doctorId,pPath='../../Data121'):
         self.pPath = pPath
+        DocotorCoarseMes.__init__(self,doctorId)
+        self.excel_header = DaySqlDataget.excel_header
         super(DocotorDay,self).__init__(doctorId)
         self.message()
 
@@ -28,6 +31,9 @@ class DocotorDay(DocotorCoarseMes):
         self.__begin2EndTime()
     
     def __listDayCase(self):
+        """
+        @listDayCase: 当天该名医生医生标注的case，那一行所对应的所有信息
+        """
         listDay = []
         for day in self.dayTimeListOfDoc:
             listDay.append([])
@@ -91,8 +97,9 @@ class DocotorDay(DocotorCoarseMes):
             
             for idx,res in enumerate(list(self.listDayCase)):
                 print('----------->',idx)
-                
-                excel_header = ['caseid','sequenceId','doctorId','taskId','datetime','useTime/s','isReview']
+                # self.excel_header
+                excel_header = self.excel_header
+                # ['caseid','sequenceId','doctorId','taskId','datetime','useTime/s','isReview']
                 res = (list(res)[0])
                 dataTime = res[0][4][0].date()
                 nullList=  [['','','','','','','']]
@@ -157,4 +164,4 @@ def allmessage():
 if __name__=='__main__':
     
     getDoctorExcelFile()
-     #46 +95 +156
+    

@@ -7,7 +7,7 @@ sys.path.append('../')
 from lib.DoctorCoarseMes import DocotorCoarseMes
 
 from  config import config
-excel_header = ['day','docId','taskListName', 'End_begin', 'workTime/hour','biaozhuTime/hour', 'caseNum', 'meantime/min', 'maxtime/min','ReviewNum']
+
 def writeDictToExcelInDiffSheet(excel_filepath,inputDict):
     write = pd.ExcelWriter(excel_filepath)
     li = list(inputDict.keys())
@@ -15,15 +15,15 @@ def writeDictToExcelInDiffSheet(excel_filepath,inputDict):
     
     if li==[]:
         
-        inputD = [['']*len(excel_header)]
+        inputD = [['']*len(DayStatic.excel_header)]
         df1 = pd.DataFrame(inputD)
-        df1.to_excel(write,f"Sheet{1}",header=excel_header)
+        df1.to_excel(write,f"Sheet{1}",header=DayStatic.excel_header)
     else :
         for idx, day in enumerate(li):
             print('----------->',idx)
             
             df1 = pd.DataFrame(inputDict[day])
-            df1.to_excel(write,f"Sheet{day}",header=excel_header)
+            df1.to_excel(write,f"Sheet{day}",header=DayStatic.excel_header)
     write.save()
 
 def writeDictToExcelInOneSheet(excel_filepath,inputDict):
@@ -33,17 +33,18 @@ def writeDictToExcelInOneSheet(excel_filepath,inputDict):
     
     listMesInSheet1=[]
     if li==[]:
-        inputD = [['']*len(excel_header)]
+        inputD = [['']*len(DayStatic.excel_header)]
         df1 = pd.DataFrame(inputD)
-        df1.to_excel(write,f"Sheet{1}",header=excel_header)
+        df1.to_excel(write,f"Sheet{1}",header=DayStatic.excel_header)
     else:
         for idx, day in enumerate(li):
             listMesInSheet1+= inputDict[day]
         df1 = pd.DataFrame(listMesInSheet1)
-        df1.to_excel(write,f"Sheet1",header=excel_header)
+        df1.to_excel(write,f"Sheet1",header=DayStatic.excel_header)
     write.save()
 
 class DayStatic():
+    excel_header = ['day','docId','taskListName', 'End_begin', 'workTime/hour','biaozhuTime/hour', 'caseNum', 'meantime/min', 'maxtime/min','ReviewNum']
     def __init__(self,pPath = f'../../Data{config.server}'):
         self.pPath = pPath
         self.getAllDay()
