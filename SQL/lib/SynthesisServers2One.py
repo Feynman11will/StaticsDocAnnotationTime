@@ -69,10 +69,12 @@ class synthesis():
                 sheetInfo = np.array(sheetFile)
                 print(f"sheetInfo",sheetInfo)
                 tmp = np.full([len(sheetInfo),1],server)
-                
+                workTime = sheetInfo[:,6]
                 eatingTime = (sheetInfo[:,9]/60 - sheetInfo[:,8]/60)
-#0      1       2               3           4               5                       6               7           8               9           10              11
-#['day','docId','taskListName','End_begin', 'workTime/hours','biaozhuTime/hours', 'caseNum', 'meantime/min', 'maxtime/min','server','eatingTime/Hours','biaozhuWithoutEatTime/Hours']
+                idx = np.where(workTime<4)
+
+                eatingTime[idx] = 0
+
                 noeatingTime =  (sheetInfo[:,6] - eatingTime)
                 noeatingTime = np.squeeze(noeatingTime)[:,None]
                 eatingTime = np.squeeze(eatingTime)[:,None]
